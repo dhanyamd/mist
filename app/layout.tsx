@@ -4,6 +4,7 @@ import "./globals.css";
 import { Manrope, DM_Sans, Inter } from 'next/font/google'
 import { ThemeProvider } from "./theme";
 import { ClerkProvider } from "@clerk/nextjs";
+import ReactQueryProvider from "./react-query";
 
 const manrope = Manrope({ subsets: ['latin'] })
 
@@ -26,9 +27,9 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            
+            <ReactQueryProvider>
                 {children}
-               
+                </ReactQueryProvider>
           </ThemeProvider>
       </body>
     </html>

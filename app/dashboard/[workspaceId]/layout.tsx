@@ -1,7 +1,8 @@
 import { onAuthenticateUser } from '@/app/actions/user'
 import { getAllUserVideos, getNotifications, getWorkSpaceFolders, getWorkspaces, verifyAccessToWorkspace } from '@/app/actions/workspace'
-import { QueryClient } from '@tanstack/react-query'
-import { redirect } from 'next/navigation'
+import Sidebar from '@/components/Sidebar'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+ import { redirect } from 'next/navigation'
 import React from 'react'
 
 type Props = {
@@ -38,9 +39,11 @@ const layout = async({params : {workspaceId}, children } : Props) => {
         queryFn : () => getNotifications()
       })
   return (
-    <div>
-      
-    </div>
+    <HydrationBoundary state={dehydrate(query)}>
+     <div className='flex h-screen w-screen'>
+      <Sidebar activeWorkSpaceId={workspaceId}/>
+     </div>
+    </HydrationBoundary>
   )
 }
 
