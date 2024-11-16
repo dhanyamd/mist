@@ -1,8 +1,11 @@
 'use client'
 import React from 'react'
-import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 import { useRouter } from 'next/navigation'
 import { Separator } from './ui/separator'
+import { getWorkspaces } from '@/app/actions/workspace'
+import { useQueryData } from '@/app/hooks/useQueryData'
+import { WorkspaceProps } from '@/app/types/index.types'
 
 type Props = {
     activeWorkSpaceId : string
@@ -10,9 +13,15 @@ type Props = {
 
 const Sidebar = ({activeWorkSpaceId} : Props) => {
     const router = useRouter()
+
+   const {data , isFetched} = useQueryData(['user-workspaces'],getWorkspaces)
+   const {data : workspace} = data as WorkspaceProps
+
+
     const onChangeActiveWorkspace = (value : string) => {
         router.push(`/dashboard/${value}`)
     }
+
   return (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden '>
       <div className='bg-[#111111] p-4 gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0'>
@@ -30,7 +39,11 @@ const Sidebar = ({activeWorkSpaceId} : Props) => {
         <SelectGroup>
             <SelectLabel>Workspaces</SelectLabel>
             <Separator/>
-            
+            {workspace.workspace.map((workspace : any) => (
+              <SelectItem key={workspace.id} value={workspace.id}>
+                {workspace.name}
+              </SelectItem>
+            ))}
         </SelectGroup>
       </SelectContent>
       </Select>
