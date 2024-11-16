@@ -8,10 +8,10 @@ import { useQueryData } from '@/app/hooks/useQueryData'
 import { WorkspaceProps } from '@/app/types/index.types'
 
 type Props = {
-    activeWorkSpaceId : string
+  activeWorkspaceId : string
 }
 
-const Sidebar = ({activeWorkSpaceId} : Props) => {
+const Sidebar = ({activeWorkspaceId} : Props) => {
     const router = useRouter()
 
    const {data , isFetched} = useQueryData(['user-workspaces'],getWorkspaces)
@@ -28,11 +28,11 @@ const Sidebar = ({activeWorkSpaceId} : Props) => {
         <p className='text-3xl font-bold flex justify-center pr-[5rem] items-center leading-7'>Mist</p>
       </div>
       <Select
-        defaultValue={activeWorkSpaceId}
+        defaultValue={activeWorkspaceId}
         onValueChange={onChangeActiveWorkspace}
       >
       <SelectTrigger className='mt-16 text-neutral-400 bg-transparent'>
-       <SelectValue placeholder="Select a workspace"> Select a workspace
+       <SelectValue placeholder="Select a workspace">
        </SelectValue>
       </SelectTrigger>
       <SelectContent className='bg-[#111111] backdrop-blur-xl'>
@@ -44,6 +44,14 @@ const Sidebar = ({activeWorkSpaceId} : Props) => {
                 {workspace.name}
               </SelectItem>
             ))}
+            {workspace.members.length > 0 && 
+            workspace.members.map((workspace) => 
+            workspace.WorkSpace && 
+           <SelectItem key={workspace.WorkSpace.id} value={workspace.WorkSpace.id}>
+             {workspace.WorkSpace.name}
+
+           </SelectItem>
+          )}
         </SelectGroup>
       </SelectContent>
       </Select>
