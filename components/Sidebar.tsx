@@ -6,6 +6,8 @@ import { Separator } from './ui/separator'
 import { getWorkspaces } from '@/app/actions/workspace'
 import { useQueryData } from '@/app/hooks/useQueryData'
 import { WorkspaceProps } from '@/app/types/index.types'
+import Modal from '@/app/global/modal'
+import { PlusCircle } from 'lucide-react'
 
 type Props = {
   activeWorkspaceId : string
@@ -28,6 +30,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         <p className='text-3xl font-bold flex justify-center pr-[5rem] items-center leading-7'>Mist</p>
       </div>
       <Select
+      //default value to persist the user's value in this case the name of workspace
         defaultValue={activeWorkspaceId}
         onValueChange={onChangeActiveWorkspace}
       >
@@ -55,7 +58,25 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         </SelectGroup>
       </SelectContent>
       </Select>
+      <Modal
+      trigger={
+              <span className="text-sm cursor-pointer flex items-center justify-center bg-neutral-800/90  hover:bg-neutral-800/60 w-full rounded-sm p-[5px] gap-2">
+                <PlusCircle
+                  size={15}
+                  className="text-neutral-800/90 fill-neutral-500"
+                />
+                <span className="text-neutral-400 font-semibold text-xs">
+                  Invite To Workspace
+                </span>
+              </span>
+            }
+            title="Invite To Workspace"
+            description="Invite other users to your workspace"
+            
+          >
+      </Modal>
     </div>
+      
   )
 }
 
