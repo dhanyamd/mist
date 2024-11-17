@@ -10,6 +10,7 @@ import { WorkspaceProps } from '@/app/types/index.types'
 import Modal from '@/app/global/modal'
 import { PlusCircle } from 'lucide-react'
 import Search from '@/app/global/search-user'
+import { MENU_ITEMS } from '@/app/constants'
 
 type Props = {
   activeWorkspaceId : string
@@ -21,7 +22,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
    const {data , isFetched} = useQueryData(['user-workspaces'],getWorkspaces)
    const {data : workspace} = data as WorkspaceProps
 
-
+    const menuItems = MENU_ITEMS(activeWorkspaceId)
     const onChangeActiveWorkspace = (value : string) => {
         router.push(`/dashboard/${value}`)
     }
@@ -80,6 +81,12 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
           >
             <Search workspaceId={activeWorkspaceId} />
       </Modal>}
+      <p className='w-full text-[#9D9D9D] font-bold mt-4'>Menu</p>
+      <nav className='w-full'>
+      <ul>
+
+      </ul>
+      </nav>
     </div>
       
   )
