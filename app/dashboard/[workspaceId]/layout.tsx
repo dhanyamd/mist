@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { onAuthenticateUser } from '@/app/actions/user'
 import { getAllUserVideos, getNotifications, getWorkSpaceFolders, getWorkspaces, verifyAccessToWorkspace } from '@/app/actions/workspace'
-import Sidebar from '@/components/Sidebar'
+import Sidebar from '@/components/sidebar/Sidebar'
 
 
 type Props = {

@@ -1,16 +1,17 @@
 "use client"
 //TODO : the subscription plan should be proupdate it later
 import React from 'react'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
-import { useRouter } from 'next/navigation'
-import { Separator } from './ui/separator'
-import { getWorkspaces } from '@/app/actions/workspace'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+import { usePathname, useRouter } from 'next/navigation'
+import { Separator } from '../ui/separator'
+import { getNotifications, getWorkspaces } from '@/app/actions/workspace'
 import { useQueryData } from '@/app/hooks/useQueryData'
-import { WorkspaceProps } from '@/app/types/index.types'
+import { NotificationsProps, WorkspaceProps } from '@/app/types/index.types'
 import Modal from '@/app/global/modal'
 import { PlusCircle } from 'lucide-react'
 import Search from '@/app/global/search-user'
 import { MENU_ITEMS } from '@/app/constants'
+import SidebarItems from './sidebar-items'
 
 type Props = {
   activeWorkspaceId : string
@@ -18,10 +19,11 @@ type Props = {
 
 const Sidebar = ({activeWorkspaceId} : Props) => {
     const router = useRouter()
-
+    const pathname = usePathname()
+    const {data : notifications} = useQueryData(['user-notifications'],getNotifications )
    const {data , isFetched} = useQueryData(['user-workspaces'],getWorkspaces)
    const {data : workspace} = data as WorkspaceProps
-
+    const {data : count} = notifications as NotificationsProps
     const menuItems = MENU_ITEMS(activeWorkspaceId)
     const onChangeActiveWorkspace = (value : string) => {
         router.push(`/dashboard/${value}`)
@@ -84,9 +86,24 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
       <p className='w-full text-[#9D9D9D] font-bold mt-4'>Menu</p>
       <nav className='w-full'>
       <ul>
-
-      </ul>
+          {menuItems.map((item) => (
+             <SidebarItems
+             href={item.href}
+             title={item.title}
+             icon={item.icon}
+            selected={pathname == item.href}
+            key={item.title}
+            notifications={
+              (item.title == 'Notifications' && 
+                count._count  && 
+                count._count.notifications
+              ) || 0
+            }
+            />
+          ))}
+        </ul>
       </nav>
+      
     </div>
       
   )

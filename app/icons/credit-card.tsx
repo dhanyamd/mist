@@ -16,13 +16,13 @@ export const CreditCard = () => {
           fill="#292929"
         />
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           clipRule="evenodd"
           d="M22 10H2V8H22V10Z"
           fill="#545454"
         />
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           clipRule="evenodd"
           d="M4 15C4 14.4477 4.44772 14 5 14H11C11.5523 14 12 14.4477 12 15C12 15.5523 11.5523 16 11 16H5C4.44772 16 4 15.5523 4 15Z"
           fill="#545454"
