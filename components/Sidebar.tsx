@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 import { useRouter } from 'next/navigation'
@@ -8,6 +8,7 @@ import { useQueryData } from '@/app/hooks/useQueryData'
 import { WorkspaceProps } from '@/app/types/index.types'
 import Modal from '@/app/global/modal'
 import { PlusCircle } from 'lucide-react'
+import Search from '@/app/global/search-user'
 
 type Props = {
   activeWorkspaceId : string
@@ -42,7 +43,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         <SelectGroup>
             <SelectLabel>Workspaces</SelectLabel>
             <Separator/>
-            {workspace.workspace.map((workspace : any) => (
+            {workspace?.workspace.map((workspace : any) => (
               <SelectItem key={workspace.id} value={workspace.id}>
                 {workspace.name}
               </SelectItem>
@@ -71,9 +72,9 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
               </span>
             }
             title="Invite To Workspace"
-            description="Invite other users to your workspace"
-            
+            description="Invite other users to your workspace" 
           >
+            <Search workspaceId={activeWorkspaceId} />
       </Modal>
     </div>
       

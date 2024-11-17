@@ -1,3 +1,4 @@
+"use server"
 import { client } from "@/lib/prisma"
 import { currentUser } from "@clerk/nextjs/server"
 export const onAuthenticateUser = async () => {
@@ -101,10 +102,10 @@ export const onAuthenticateUser = async () => {
       if(users && users.length > 0){
         return {status : 200, data : users}
       }
-      return {status : 404, data : undefined}
+      return {status : 404, data : null}
     }catch(error){
       console.log("error", error)
-      return {status : 500, data : undefined}
+      return {status : 500, data : null}
 
     }
   }

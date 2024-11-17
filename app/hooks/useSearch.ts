@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react"
 import { useQueryData } from "./useQueryData"
 import { searchUsers } from "../actions/user"
@@ -16,8 +17,8 @@ const [onUsers, setOnUSers] = useState<
     image : string |null,
     email : string | null
 }[]
-| undefined
->(undefined)
+| null
+>(null)
   const onSearchQuery = (e : React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.target.value)
   }
@@ -31,8 +32,8 @@ const [onUsers, setOnUSers] = useState<
   const {refetch, isFetching} = useQueryData([key, debounce], 
     async({queryKey}) => {
         if(type == "USERS") {
-            const workspace = await searchUsers(queryKey[1] as string)
-            if(workspace.status == 200) setOnUSers(workspace.data)
+            const users = await searchUsers(queryKey[1] as string)
+            if(users.status == 200) setOnUSers(users?.data!)
         }
     },
     false
@@ -40,7 +41,7 @@ const [onUsers, setOnUSers] = useState<
    //@ts-ignore
   useEffect(() => {
     if(debounce) return refetch()
-    if(!debounce) setOnUSers(undefined)
+    if(!debounce) setOnUSers(null)
         return() => {
          debounce
     }
