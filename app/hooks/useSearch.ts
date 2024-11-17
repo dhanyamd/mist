@@ -38,13 +38,14 @@ const [onUsers, setOnUSers] = useState<
     },
     false
   )
-   //@ts-ignore
+  
   useEffect(() => {
-    if(debounce) return refetch()
-    if(!debounce) setOnUSers(null)
-        return() => {
-         debounce
+    if (debounce) refetch()
+    if (!debounce) setOnUSers(null)
+    return () => {
+      debounce
     }
-  },[debounce])
-  return {onSearchQuery, query, isFetching, onUsers}
+  }, [debounce])
+
+  return { onSearchQuery, query, isFetching, onUsers }
 }

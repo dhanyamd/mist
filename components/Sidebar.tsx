@@ -1,4 +1,5 @@
 "use client"
+//TODO : the subscription plan should be proupdate it later
 import React from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 import { useRouter } from 'next/navigation'
@@ -24,6 +25,8 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
     const onChangeActiveWorkspace = (value : string) => {
         router.push(`/dashboard/${value}`)
     }
+    //modal disapperars if it's a private workspace 
+    const currentWorkpace = workspace.workspace.find((s) => s.id == activeWorkspaceId)
 
   return (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden '>
@@ -59,7 +62,8 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         </SelectGroup>
       </SelectContent>
       </Select>
-      <Modal
+      
+     { currentWorkpace?.type == "PUBLIC" && workspace.subscription?.plan == "FREE" &&  <Modal
       trigger={
               <span className="text-sm cursor-pointer flex items-center justify-center bg-neutral-800/90  hover:bg-neutral-800/60 w-full rounded-sm p-[5px] gap-2">
                 <PlusCircle
@@ -75,7 +79,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
             description="Invite other users to your workspace" 
           >
             <Search workspaceId={activeWorkspaceId} />
-      </Modal>
+      </Modal>}
     </div>
       
   )
