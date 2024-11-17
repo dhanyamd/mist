@@ -12,6 +12,10 @@ import { PlusCircle } from 'lucide-react'
 import Search from '@/app/global/search-user'
 import { MENU_ITEMS } from '@/app/constants'
 import SidebarItems from './sidebar-items'
+import WorkspacePlaceholder from './WorkspacePlaceholder'
+import GlobalCard from '@/app/global/global-card'
+import { Button } from '../ui/button'
+import Loader from '@/app/(website)/_components/loader'
 
 type Props = {
   activeWorkspaceId : string
@@ -66,7 +70,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
       </SelectContent>
       </Select>
       
-     { currentWorkpace?.type == "PUBLIC" && workspace.subscription?.plan == "FREE" &&  <Modal
+     { currentWorkpace?.type == "PERSONAL" && workspace.subscription?.plan == "FREE" &&  <Modal
       trigger={
               <span className="text-sm cursor-pointer flex items-center justify-center bg-neutral-800/90  hover:bg-neutral-800/60 w-full rounded-sm p-[5px] gap-2">
                 <PlusCircle
@@ -103,10 +107,68 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
           ))}
         </ul>
       </nav>
-      
-    </div>
-      
-  )
-}
+      <Separator className='w-4/5'/>
+      <p className='w-full text-[#9D9D9D] font-bold mt-4'>Workspaces</p>
+      {workspace.workspace.length === 1 && workspace.members.length === 0 && (
+        <div className="w-full mt-[-10px]">
+          <p className="text-[#3c3c3c] font-medium text-sm">
+            {workspace.subscription?.plan === 'FREE'
+              ? 'Upgrade to create workspaces'
+              : 'No Workspaces'}
+          </p>
+        </div>
+      )}
 
-export default Sidebar
+      <nav className="w-full">
+        <ul className="h-[150px] overflow-auto overflow-x-hidden fade-layer">
+          {workspace.workspace.length > 0 &&
+            workspace.workspace.map(
+              (item) =>
+                item.type !== 'PERSONAL' && (
+                  <SidebarItems
+                    href={`/dashboard/${item.id}`}
+                    selected={pathname === `/dashboard/${item.id}`}
+                    title={item.name}
+                    notifications={0}
+                    key={item.name}
+                    icon={
+                      <WorkspacePlaceholder>
+                        {item.name.charAt(0)}
+                      </WorkspacePlaceholder>
+                    }
+                  />
+                )
+            )}
+          {workspace.members.length > 0 &&
+            workspace.members.map((item) => (
+              <SidebarItems
+                href={`/dashboard/${item.WorkSpace.id}`}
+                selected={pathname === `/dashboard/${item.WorkSpace.id}`}
+                title={item.WorkSpace.name}
+                notifications={0}
+                key={item.WorkSpace.name}
+                icon={
+                  <WorkspacePlaceholder>
+                    {item.WorkSpace.name.charAt(0)}
+                  </WorkspacePlaceholder>
+                }
+              />
+            ))}
+        </ul>
+      </nav>
+      <Separator className="w-4/5" />
+      {workspace.subscription?.plan === 'FREE' && (
+        <GlobalCard
+          title="Upgrade to Pro"
+          description=" Unlock AI features like transcription, AI summary, and more."
+          footer={
+            <Button>Upgrade</Button>
+          }
+        />
+      )}
+    </div>
+
+  )}
+
+  export default Sidebar
+
