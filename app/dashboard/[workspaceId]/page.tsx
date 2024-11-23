@@ -1,3 +1,5 @@
+import CreateWorkspaces from '@/app/global/create-workspace'
+import CreateWorkspace from '@/app/global/create-workspace'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import React from 'react'
 
@@ -22,8 +24,8 @@ const page = ({params} : Props) => {
     <TabsTrigger value='archive' className='p-[13px] px-6 rounded-full data-[state=active]:bg-[#252525]'>
       Archive</TabsTrigger>
   </TabsList>
-  <div className='flex gap-x-3'>
-
+  <div className='flex gap-x-3 pb-2'>
+  <CreateWorkspaces/>
   </div>
 </div>
       </Tabs>

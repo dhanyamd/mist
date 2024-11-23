@@ -179,3 +179,45 @@ export const getNotifications = async() => {
     
     }
 }
+
+export const CreateWorkspace = async(name : string) => {
+  try{
+   const user = await currentUser();
+   if(!user) return {status : 404}
+
+   const authorized = await client.user.findUnique({
+    where : {
+        clerkid : user.id
+    },
+    select : {
+        subscription : {
+            select : {
+                plan : true
+            }
+        }
+    }
+   })
+   //TODO: make it to pro later
+   if(authorized?.subscription?.plan === "FREE"){
+    const workspace = await client.user.update({
+        where : {
+            clerkid : user.id
+        },
+        data : {
+            workspace : {
+                create : {
+                    name,
+                    type : "PUBLIC"
+                }
+            }
+        }
+    })
+    if(workspace){
+        return {status : 201, data : "workspace created"}
+    }
+   }
+   return {status : 401, data : "you are not authorized to create a workspace"}
+  }catch(error){
+    return {status : 400}
+  }
+}

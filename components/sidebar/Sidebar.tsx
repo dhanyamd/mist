@@ -160,7 +160,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         </ul>
       </nav>
       <Separator className="w-4/5" />
-      {workspace.subscription?.plan === 'FREE' && (
+      {workspace?.subscription?.plan === 'FREE' && (
         <GlobalCard
           title="Upgrade to Pro"
           description=" Unlock AI features like transcription, AI summary, and more."
