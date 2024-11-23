@@ -1,5 +1,5 @@
 "use client"
-//TODO : the subscription plan should be proupdate it later
+//TODO : the subscription plan should be pro update it later(LINE 74)
 import React from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 import { usePathname, useRouter } from 'next/navigation'
@@ -8,7 +8,7 @@ import { getNotifications, getWorkspaces } from '@/app/actions/workspace'
 import { useQueryData } from '@/app/hooks/useQueryData'
 import { NotificationsProps, WorkspaceProps } from '@/app/types/index.types'
 import Modal from '@/app/global/modal'
-import { PlusCircle } from 'lucide-react'
+import { Menu, PlusCircle } from 'lucide-react'
 import Search from '@/app/global/search-user'
 import { MENU_ITEMS } from '@/app/constants'
 import SidebarItems from './sidebar-items'
@@ -16,6 +16,8 @@ import WorkspacePlaceholder from './WorkspacePlaceholder'
 import GlobalCard from '@/app/global/global-card'
 import { Button } from '../ui/button'
 import Loader from '@/app/(website)/_components/loader'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import Infobar from '@/app/global/infobar'
 
 type Props = {
   activeWorkspaceId : string
@@ -33,9 +35,10 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         router.push(`/dashboard/${value}`)
     }
     //modal disapperars if it's a private workspace 
+    //basically finding the id of workspace matches with the activeworkspaceId redirected from the actual id 
     const currentWorkpace = workspace.workspace.find((s) => s.id == activeWorkspaceId)
 
-  return (
+  const SideBarSection = (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden '>
       <div className='bg-[#111111] p-4 gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0'>
         <p className='text-3xl font-bold flex justify-center pr-[5rem] items-center leading-7'>Mist</p>
@@ -99,8 +102,8 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
             key={item.title}
             notifications={
               (item.title == 'Notifications' && 
-                count._count  && 
-                count._count.notifications
+                count?._count  && 
+                count?._count.notifications
               ) || 0
             }
             />
@@ -109,7 +112,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
       </nav>
       <Separator className='w-4/5'/>
       <p className='w-full text-[#9D9D9D] font-bold mt-4'>Workspaces</p>
-      {workspace.workspace.length === 1 && workspace.members.length === 0 && (
+      {workspace?.workspace.length === 1 && workspace.members.length === 0 && (
         <div className="w-full mt-[-10px]">
           <p className="text-[#3c3c3c] font-medium text-sm">
             {workspace.subscription?.plan === 'FREE'
@@ -161,6 +164,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
         <GlobalCard
           title="Upgrade to Pro"
           description=" Unlock AI features like transcription, AI summary, and more."
+          /**@ts-ignore */
           footer={
             <Button>Upgrade</Button>
           }
@@ -168,7 +172,26 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
       )}
     </div>
 
-  )}
+  )
+  return <div className='overflow-y-auto w-full '>
+  <div className='full '>
+    <Infobar/>
+    <div className='md:hidden my-4 fixed'>
+  <Sheet>
+    <SheetTrigger asChild className='ml-2'>
+     <Button variant={'ghost'} className='mt-[2px]'>
+      <Menu />
+     </Button>
+    </SheetTrigger>
+    <SheetContent side="left" className='p-0 w-fit h-full'>
+     {SideBarSection}
+    </SheetContent>
+  </Sheet>
+    </div>
+    <div className='md:block hidden h-full'>{SideBarSection}</div>
+  </div>
+  </div>
+}
 
   export default Sidebar
 

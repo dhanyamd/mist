@@ -17,7 +17,7 @@ const Modal = ({trigger, children, title, description, className} : Props) => {
         </DialogTrigger>
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>{title}</DialogTitle>
+                <DialogTitle className='sr-only'>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
             {children}
