@@ -9,6 +9,8 @@ import {
 import { onAuthenticateUser } from '@/app/actions/user'
 import { getAllUserVideos, getNotifications, getWorkSpaceFolders, getWorkspaces, verifyAccessToWorkspace } from '@/app/actions/workspace'
 import Sidebar from '@/components/sidebar/Sidebar'
+import GloablHeader from '@/app/global/global-header'
+import GlobalHeader from '@/app/global/global-header'
 
 
 type Props = {
@@ -54,7 +56,7 @@ const Layout = async ({  params: {workspaceId }, children }: Props) => {
       <div className="flex min-h-screen w-screen">
         <Sidebar activeWorkspaceId={workspaceId} />
         <div className="w-full pt-28 p-6 overflow-y-scroll overflow-x-hidden">
-         
+          <GlobalHeader workspace={hasAccess.data.workspace} />
           <div className="mt-4">{children}</div>
         </div>
       </div>

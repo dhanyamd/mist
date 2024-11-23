@@ -36,7 +36,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
     }
     //modal disapperars if it's a private workspace 
     //basically finding the id of workspace matches with the activeworkspaceId redirected from the actual id 
-    const currentWorkpace = workspace.workspace.find((s) => s.id == activeWorkspaceId)
+    const currentWorkpace = workspace?.workspace.find((s) => s.id == activeWorkspaceId)
 
   const SideBarSection = (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden '>
@@ -61,8 +61,8 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
                 {workspace.name}
               </SelectItem>
             ))}
-            {workspace.members.length > 0 && 
-            workspace.members.map((workspace) => 
+            {workspace?.members.length > 0 && 
+            workspace?.members.map((workspace) => 
             workspace.WorkSpace && 
            <SelectItem key={workspace.WorkSpace.id} value={workspace.WorkSpace.id}>
              {workspace.WorkSpace.name}
@@ -123,9 +123,9 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
       )}
 
       <nav className="w-full">
-        <ul className="h-[150px] overflow-auto overflow-x-hidden fade-layer">
-          {workspace.workspace.length > 0 &&
-            workspace.workspace.map(
+        <ul className="h-[150px] fade-layer">
+          {workspace?.workspace.length > 0 &&
+            workspace?.workspace.map(
               (item) =>
                 item.type !== 'PERSONAL' && (
                   <SidebarItems
@@ -142,8 +142,8 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
                   />
                 )
             )}
-          {workspace.members.length > 0 &&
-            workspace.members.map((item) => (
+          {workspace?.members.length > 0 &&
+            workspace?.members.map((item) => (
               <SidebarItems
                 href={`/dashboard/${item.WorkSpace.id}`}
                 selected={pathname === `/dashboard/${item.WorkSpace.id}`}
@@ -173,8 +173,7 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
     </div>
 
   )
-  return <div className='overflow-y-auto w-full '>
-  <div className='full '>
+  return <div className='full '>
     <Infobar/>
     <div className='md:hidden my-4 fixed'>
   <Sheet>
@@ -189,7 +188,6 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
   </Sheet>
     </div>
     <div className='md:block hidden h-full'>{SideBarSection}</div>
-  </div>
   </div>
 }
 
