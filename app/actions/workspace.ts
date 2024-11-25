@@ -229,7 +229,7 @@ export const renameFolders = async(folderId : string, name : string) => {
             id : folderId
         },
         data : {
-            name
+            name : name
         }
       })
       if(folders){

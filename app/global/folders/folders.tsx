@@ -1,7 +1,7 @@
 'use client'
 import Loader from '@/app/(website)/_components/loader'
 import { renameFolders } from '@/app/actions/workspace'
-import { useMutationData } from '@/app/hooks/useMutationData'
+import { useMutationData, useMutationDataState } from '@/app/hooks/useMutationData'
 import FolderDuotone from '@/app/icons/foldertone'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -27,13 +27,15 @@ const Folders = ({id,name,count,optimistic} : Props) => {
     const Renamed = () => setOnRename(false)
 
     const {mutate, isPending } = useMutationData(['rename-folders'],
-       (data : {name : string}) => renameFolders(id, name),
+       (data : {name : string}) => renameFolders(id, data.name),
        'workspace-folders',
         Renamed)
     const handleFolderClick =() => {
       if (onRename) return
       router.push(`${pathname}/folder/${id}`)
     }
+    
+    const { latestVariables } = useMutationDataState(['rename-folders'])
 
     const handleDoubleClick = (e : React.MouseEvent<HTMLParagraphElement>) => {
      e.stopPropagation()
@@ -41,7 +43,7 @@ const Folders = ({id,name,count,optimistic} : Props) => {
     }
 
     const updateFolderEvent = (e: React.FocusEvent<HTMLInputElement>) => {
-      if(inputRef.current && folderCardRef.current){
+     if(inputRef.current && folderCardRef.current){
         if(
           !inputRef.current.contains(e.target as Node | null) && 
           !folderCardRef.current.contains(e.target as Node | null)
@@ -53,7 +55,7 @@ const Folders = ({id,name,count,optimistic} : Props) => {
           Renamed()
       }
       }
-    }
+    }  
   return (
     <div
     onClick={handleFolderClick}
@@ -62,9 +64,10 @@ const Folders = ({id,name,count,optimistic} : Props) => {
     {cn(optimistic && 'opacity-60', 'flex items-center gap-2 hover:bg-neutral-800 cursor-pointer transition duration-150 justify-between min-w-[250px] py-5 px-4 rounded-lg border-[1px]' )}
     
     >
-      <Loader state={false}>
+      <Loader state={isPending}>
         <div className='flex flex-col gap-[1px]'>
-        {onRename ? (<Input 
+        {onRename ? (
+          <Input 
            onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
             updateFolderEvent(e)
           }}
@@ -72,10 +75,18 @@ const Folders = ({id,name,count,optimistic} : Props) => {
           ref={inputRef}
           placeholder={name}
         className='border-none text-base w-full outline-none text-neutral-300 bg-transparent p-0' />) : (
-          <p 
-          onClick={(e) => e.stopPropagation()}
-          onDoubleClick={handleDoubleClick}
-           className='text-neutral-300'>{name}</p>)}
+          <p
+              onClick={(e) => e.stopPropagation()}
+              className="text-neutral-300"
+              onDoubleClick={handleDoubleClick}
+            >
+              {latestVariables &&
+              latestVariables.status === 'pending' &&
+              latestVariables.variables.id === id
+                ? latestVariables.variables.name
+                : name}
+            </p>
+           )}
           <span className='text-sm text-neutral-500'>{count || 0} videos</span>
           </div>
       </Loader>
@@ -83,5 +94,6 @@ const Folders = ({id,name,count,optimistic} : Props) => {
     </div>
   )
 }
+
 
 export default Folders

@@ -13,7 +13,7 @@ const CreateFolders = ({workspaceId} : Props) => {
   return (
     <Button 
     onClick={onCreateNewFolder}
-    className='bg-[#1D1D1D] text-[#707070] flex items-center gap-2 py-6 px-6 rounded-2xl'>
+    className='bg-[#1D1D1D] text-[#a79d9d] flex items-center gap-2 py-6 px-6 rounded-2xl'>
        <FolderPlusDuotine/>
       Create Folders
     </Button>
