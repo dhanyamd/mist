@@ -1,75 +1,92 @@
 'use client'
-import FolderDuotone from '@/app/icons/foldertone'
 import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
-import React from 'react'
-import { useQueryData } from '@/app/hooks/useQueryData'
+import React, { useEffect, useState } from 'react'
 import { getWorkSpaceFolders } from '@/app/actions/workspace'
 import { useMutationDataState } from '@/app/hooks/useMutationData'
-import Folders from './folders'
+import { useQueryData } from '@/app/hooks/useQueryData'
+import FolderDuotone from '@/app/icons/foldertone'
+import Folder from './folders'
 
 type Props = {
-    workspaceId : string
+  workspaceId: string
 }
 
-export type FolderProps = {
-    status : number
-    data : ({
-        _count : {
-            videos : number
-        } 
-    } & {
-        id : string,
-        name : string,
-        createdAt : Date,
-        workspaceId : string | null
+export type FoldersProps = {
+  status: number
+  data: ({
+    _count: {
+      videos: number
     }
-)[]
+  } & {
+    id: string
+    name: string
+    createdAt: Date
+    workSpaceId: string | null
+  })[]
 }
 
-const Folder = ({workspaceId} : Props) => {
-    const {data, isFetched} = useQueryData(["workspace-folders"], () => getWorkSpaceFolders(workspaceId))
-    const {latestVariables} = useMutationDataState(['create-folder'] )
+const Folders = ({ workspaceId }: Props) => {
+ 
+  const { data, isFetched } = useQueryData(['workspace-folders'], () =>
+    getWorkSpaceFolders(workspaceId)
+  )
 
-    const { status, data: folders } = data as FolderProps
-  
+  const { latestVariables } = useMutationDataState(['create-folder'])
+
+  const { status, data: folders } = data as FoldersProps
+
+  // if (isFetched && folders) {
+  // }
+
+ 
+
   return (
-    <div className='flex flex-col gap-4'   suppressHydrationWarning>
-      <div className='flex items-center justify-between'>
-      <div className='flex items-center gap-4'>
-        <FolderDuotone/>
-        <h2 className='text-[#BDBDBD] text-xl'>Folders</h2>
+    <div
+      className="flex flex-col gap-4"
+      suppressHydrationWarning
+    >
+      <div className="flex items-center  justify-between">
+        <div className="flex items-center gap-4">
+          <FolderDuotone />
+          <h2 className="text-[#BDBDBD] text-xl"> Folders</h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <p className="text-[#BDBDBD]">See all</p>
+          <ArrowRight color="#707070" />
+        </div>
       </div>
-      <div className='flex items-center gap-2'>
-       <h2 className='text-[#BDBDBD]'>See all</h2>
-       <ArrowRight color='#707070'/>
-      </div>
-      </div>
-      <section className={cn( status!== 200 && "justify-center", 'flex items-center gap-4 overflow-x-auto w-full')}>
+      <div
+        className={cn(
+          status !== 200 && 'justify-center',
+          'flex items-center gap-4 overflow-x-auto w-full'
+        )}
+      >
         {status !== 200 ? (
-            <p className='text-neutral-300'>No folders in workspace</p>
+          <p className="text-neutral-300">No folders in workspace</p>
         ) : (
-            <>
+          <>
             {latestVariables && latestVariables.status === 'pending' && (
-                 <Folders
-                 name={latestVariables.variables.name}
-                 id={latestVariables.variables.id}
-                 optimistic
-                 />
+              <Folder
+                name={latestVariables.variables.name}
+                id={latestVariables.variables.id}
+                optimistic
+              />
             )}
             {folders.map((folder) => (
-                <Folders
-                id={folder.name}
-                count={folder._count.videos}
+              <Folder
                 name={folder.name}
+                count={folder._count.videos}
+                id={folder.id}
                 key={folder.id}
-                />
+              />
             ))}
-            </>
+          </>
         )}
-      </section>
+      </div>
+    
     </div>
   )
 }
 
-export default Folder
+export default Folders
