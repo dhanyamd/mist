@@ -1,15 +1,38 @@
-import FolderPlusDuotine from '@/app/icons/folder-duo-tone'
+'use client'
 import FolderDuotone from '@/app/icons/foldertone'
 import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
 import React from 'react'
 import Folders from './folders'
+import { useQueryData } from '@/app/hooks/useQueryData'
+import { getWorkSpaceFolders } from '@/app/actions/workspace'
+import { useMutationDataState } from '@/app/hooks/useMutationData'
 
 type Props = {
     workspaceId : string
 }
 
-const Folder = (props : Props) => {
+export type FolderProps = {
+    status : number
+    data : ({
+        _count : {
+            videos : number
+        } 
+    } & {
+        id : string,
+        name : string,
+        createdAt : Date,
+        workspaceId : string | null
+    }
+)[]
+}
+
+const Folder = ({workspaceId} : Props) => {
+    const {data, isFetched} = useQueryData(["workspace-folders"], () => getWorkSpaceFolders(workspaceId))
+    const {latestVariables} = useMutationDataState(['create-folder'] )
+
+    const { status, data: folders } = data as FolderProps
+  
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex items-center justify-between'>
@@ -22,8 +45,29 @@ const Folder = (props : Props) => {
        <ArrowRight color='#707070'/>
       </div>
       </div>
-      <section className={cn('flex items-center gap-4 overflow-x-auto w-full')}>
-     <Folders name='Folder title' id={''}/>
+      <section className={cn( status!== 200 && "justify-center", 'flex items-center gap-4 overflow-x-auto w-full')}>
+        {status !== 200 ? (
+            <p className='text-neutral-300'>No folders in workspace</p>
+        ) : (
+            <>
+            {latestVariables && latestVariables.status === 'pending' && (
+                 <Folder
+                 /**@ts-ignore */
+                 name={latestVariables.variables.name}
+                 id={latestVariables.variables.id}
+                 optimistic
+                 />
+            )}
+            {folders.map((folder) => (
+                <Folders 
+                id={folder.name}
+                count={folder._count.videos}
+                name={folder.name}
+                key={folder.id}
+                />
+            ))}
+            </>
+        )}
       </section>
     </div>
   )

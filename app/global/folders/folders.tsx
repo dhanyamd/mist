@@ -59,7 +59,7 @@ const Folders = ({id,name,count,optimistic} : Props) => {
     onClick={handleFolderClick}
     ref={folderCardRef}
     className=
-    {cn('flex items-center gap-2 hover:bg-neutral-800 cursor-pointer transition duration-150 justify-between min-w-[250px] py-5 px-4 rounded-lg border-[1px]' )}
+    {cn(optimistic && 'opacity-60', 'flex items-center gap-2 hover:bg-neutral-800 cursor-pointer transition duration-150 justify-between min-w-[250px] py-5 px-4 rounded-lg border-[1px]' )}
     
     >
       <Loader state={false}>

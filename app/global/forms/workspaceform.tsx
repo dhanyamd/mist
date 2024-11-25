@@ -15,8 +15,8 @@ const WorkspaceForm = () => {
               errors={errors}
               inputType='input'
               type='text' name={'name'}     />
-                  <Button className='text-sm w-full ' type='submit' disabled={isPending}>
-                    <Loader state={isPending}>Create workspace</Loader>
+                  <Button className='text-sm w-full' type='submit' disabled={isPending}>
+                    <Loader state={isPending} >Create workspace</Loader>
                   </Button>
 
     </form>
