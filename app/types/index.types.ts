@@ -36,3 +36,23 @@ export type WorkspaceProps = {
       }
     }
   }
+
+  export type VideoProps = {
+    status : number
+    data : {
+      User : {
+        firstname : string | null 
+        lastname : string | null 
+        image : string | null
+      } | null 
+      id : string
+      proccessing : boolean 
+      Folder : {
+        id : string 
+        name : string
+      } | null  
+    createdAt : Date
+    title : string | null
+    source : string
+  }[]
+}
