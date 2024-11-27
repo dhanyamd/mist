@@ -27,7 +27,7 @@ const Videos = ({folderId, videosKey, workspaceId} : Props) => {
         <section className={cn(
             videoStatus !== 200 ? 'p-5' : 'grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
         )}>
-         <VideoCard workspaceId={workspaceId} {...video}/>
+         <VideoCard workspaceId={workspaceId}/>
         </section>
     </div>
   )
