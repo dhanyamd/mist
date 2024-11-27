@@ -23,6 +23,7 @@ const VideoCard = (props : Props) => {
   return <Loader state={false}>
 
     <ChangeVideoLocation 
+    
     />
   </Loader>
 }

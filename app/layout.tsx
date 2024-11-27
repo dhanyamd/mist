@@ -5,6 +5,7 @@ import { Manrope, DM_Sans, Inter } from 'next/font/google'
 import { ThemeProvider } from "./theme";
 import { ClerkProvider } from "@clerk/nextjs";
 import ReactQueryProvider from "./react-query";
+import { ReduxProvider } from "./redux/provider";
 
 const manrope = Manrope({ subsets: ['latin'] })
 
@@ -27,9 +28,11 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
+            <ReduxProvider>
             <ReactQueryProvider>
                 {children}
                 </ReactQueryProvider>
+            </ReduxProvider>
           </ThemeProvider>
       </body>
     </html>
