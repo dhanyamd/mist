@@ -10,7 +10,7 @@ type Props = {
     currentFolderName? : string
 }
 
-const CardMenu = ({videoId, currentFolder, currentFolderName, currentWorkspace}: Props) => {
+const  CardMenu = ({videoId, currentFolder, currentFolderName, currentWorkspace}: Props) => {
   return (
    <Modal 
    className='flex items-center gap-x-2 cursor-pointer'
@@ -19,8 +19,8 @@ const CardMenu = ({videoId, currentFolder, currentFolderName, currentWorkspace}:
    trigger={
     <Move 
     size={20}
-    fill='#a4a4a4'
-    className='text-[#a4a4a4]'
+    fill='#4f4f4f'
+    className='text-[#4f4f4f]'
     />
    }
    >

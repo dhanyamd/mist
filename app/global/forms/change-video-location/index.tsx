@@ -1,3 +1,4 @@
+import { useMoveFolders } from '@/app/hooks/useFolders'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import React from 'react'
@@ -10,6 +11,10 @@ type Props = {
 }
 
 const ChangeVideoLocation = ({videoId, currentFolder, currentFolderName, currentWorkspace} : Props) => {
+    const { errors, folders, isFetching, isFolder, isPending, onFormSubmit, register, workspaces} = 
+    useMoveFolders(videoId, currentWorkspace!)
+   const folder = folders.find((f) => f.id === currentFolder)
+   const workspace = workspaces.find((f) => f.id === currentWorkspace)
   return (
    <form className='flex flex-col gap-y-5'>
  <div className='border-[1px] rounded-xl p-5'>

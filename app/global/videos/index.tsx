@@ -13,6 +13,24 @@ type Props = {
     workspaceId : string
 }
 
+/*const video  = {
+    User : {
+        firstname : 'John',
+        lastname : 'Doe',
+        image : "https://example.com/profile-image.jpg"
+    },
+    id : 'video123',
+    processing : false,
+    Folder : {
+        id : 'folder456',
+        name : 'Marketing videos'
+    },
+    createdAt : new Date('2023-04-15T10:30:00Z'),
+    title : 'Project Demo : New Features',
+    source : "https://example.com/videos/product-demo.mp4"
+
+}*/
+
 const Videos = ({folderId, videosKey, workspaceId} : Props) => {
     const {data : videoData} = useQueryData([videosKey], () => getAllUserVideos(folderId))
     const {status : videoStatus, data : videos} = videoData as VideoProps
@@ -27,15 +45,18 @@ const Videos = ({folderId, videosKey, workspaceId} : Props) => {
         <section className={cn(
             videoStatus !== 200 ? 'p-5' : 'grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
         )}>
-         <VideoCard workspaceId={workspaceId}/>
+         {videoStatus === 200  ? (
+    videos.map((video) => (
+    <VideoCard  key={video.id} workspaceId={workspaceId} {...video}/>
+))
+) : (
+    <p className='text-[#BdBdBd]'>No videos in workspace</p>
+)}
         </section>
     </div>
   )
 }
 
 export default Videos
-/* {videoStatus === 200  ? (
-    videos.map((video) => <VideoCard />)
-) : (
-    <p className='text-[#BdBdBd]'>No videos in workspace</p>
-)}*/
+ 
+
