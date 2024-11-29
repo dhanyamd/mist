@@ -18,6 +18,8 @@ import { Button } from '../ui/button'
 import Loader from '@/app/(website)/_components/loader'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import Infobar from '@/app/global/infobar'
+import { useDispatch } from 'react-redux'
+import { WORKSPACES } from '@/app/redux/slices/workspace'
 
 type Props = {
   activeWorkspaceId : string
@@ -25,6 +27,7 @@ type Props = {
 
 const Sidebar = ({activeWorkspaceId} : Props) => {
     const router = useRouter()
+    const dispatch = useDispatch()
     const pathname = usePathname()
     const {data : notifications} = useQueryData(['user-notifications'],getNotifications )
    const {data , isFetched} = useQueryData(['user-workspaces'],getWorkspaces)
@@ -37,7 +40,9 @@ const Sidebar = ({activeWorkspaceId} : Props) => {
     //modal disapperars if it's a private workspace 
     //basically finding the id of workspace matches with the activeworkspaceId redirected from the actual id 
     const currentWorkpace = workspace?.workspace.find((s) => s.id == activeWorkspaceId)
-
+    if(isFetched && workspace){
+      dispatch(WORKSPACES({workspaces : workspace.workspace}))
+    }
   const SideBarSection = (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden '>
       <div className='bg-[#111111] p-4 gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0'>

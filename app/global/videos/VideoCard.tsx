@@ -88,14 +88,17 @@ const VideoCard = (props : Props) => {
             </Link>
     </div>
 
-    <ChangeVideoLocation
+
+  </Loader>
+}
+
+export default VideoCard
+/*
+ <ChangeVideoLocation
     currentFolder={props.Folder?.id}
     currentFolderName={props.Folder?.name}
     videoId={props.id}
     currentWorkspace={props.workspaceId}
     />
 
-  </Loader>
-}
-
-export default VideoCard
+*/
