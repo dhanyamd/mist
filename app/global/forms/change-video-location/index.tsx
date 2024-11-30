@@ -32,11 +32,11 @@ const ChangeVideoLocation = ({videoId, currentFolder, currentFolderName, current
     </div>
     <Separator orientation="horizontal" />
     <div className="flex flex-col gap-y-5 p-5 border-[1px] rounded-xl">
-      <h2 className="text-md text-[#a4a4a4]">To</h2>
+      <h2 className="text-md text-[#a4a4a4]">Select where you want to move your videos</h2>
       <Label className="flex-col gap-y-2 flex">
         <p className="text-md">Workspace</p>
         <select
-          className="rounded-xl text-base bg-transparent"
+          className="rounded-none p-2 text-base bg-[#2a2929]"
           {...register('workspace_id')}
         >
           {workspaces.map((space) => (
@@ -58,7 +58,7 @@ const ChangeVideoLocation = ({videoId, currentFolder, currentFolderName, current
           {isFolder && isFolder.length > 0 ? (
             <select
               {...register('folder_id')}
-              className="rounded-xl bg-transparent text-base"
+              className="rounded-none p-2 bg-[#2a2929] text-base"
             >
               {isFolder.map((folder, key) =>
                 key === 0 ? (

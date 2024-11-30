@@ -303,3 +303,47 @@ export const moveVideoLocation = async(videoId : string, folderId : string, work
   return {status : 400, data : "something went wrong"}
  }
 }
+
+export const previewVideo = async(videoId : string) => {
+    try{
+      const user = await currentUser();
+      if (!user) return {status : 400}
+      const video = await client.video.findUnique({
+        where : {
+            id : videoId
+        },
+        select : {
+            title : true,
+            description : true,
+            source : true,
+            createdAt : true,
+            processing : true,
+            views : true,
+            summery : true,
+            User : {
+                select : {
+                    firstname : true,
+                    lastname : true,
+                    image : true,
+                    clerkid : true ,
+                    subscription : {
+                        select : {
+                            plan : true
+                        }
+                    }
+                }
+            }
+        }
+      })
+      if(video){
+        return {
+            status : 200,
+            data : video,
+            author : user.id == video.User?.clerkid ? true : false
+        }
+      }
+      return {status : 404}
+    }catch(error){
+      return {status : 404}
+    }
+}
