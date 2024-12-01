@@ -5,6 +5,8 @@ import { VideosProps } from '@/app/types/index.types'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import CopyLink from '../copy-link'
+import RichLink from '../richlink'
+import { truncateString } from '@/lib/utils'
 
 type Props = {
     videoId : string
@@ -72,6 +74,11 @@ const VideoPreview = ({videoId} : Props) => {
             className="rounded-full bg-transparent px-10"
             videoId={videoId}
           />
+          <RichLink 
+          id={videoId}
+          source={video.source}
+          description={truncateString(video.description as string, 150)}
+          title={video.title as string}/>
           </div>
           </div>
 </div>
