@@ -7,6 +7,11 @@ import React from 'react'
 import CopyLink from '../copy-link'
 import RichLink from '../richlink'
 import { truncateString } from '@/lib/utils'
+import { Download } from 'lucide-react'
+import TabsMenu from '../../tabs'
+import AiTools from '../../ai-tools'
+import VideoTranscript from '../../video-transcript'
+import { TabsContent } from '@/components/ui/tabs'
 
 type Props = {
     videoId : string
@@ -20,8 +25,7 @@ const VideoPreview = ({videoId} : Props) => {
      const daysAgo = Math.floor(
             (new Date().getTime() - video.createdAt.getTime())/ (24 * 60 * 60 *1000)
         )
-   return (
-    <div className='grid grid-cols-1 xl:grid-cols-3 lg:px-20 lg:py-20 p-10 gap-5 overflow-y-auto'>
+   return   <div className='grid grid-cols-1 xl:grid-cols-3 lg:px-20 lg:py-20 p-10 gap-5 overflow-y-auto'>
    <div className='flex flex-col lg:col-span-2 gap-y-10'>
   <div>
     <div className='flex gap-x-5 items-start justify-between'>
@@ -79,10 +83,25 @@ const VideoPreview = ({videoId} : Props) => {
           source={video.source}
           description={truncateString(video.description as string, 150)}
           title={video.title as string}/>
+          <Download className='text-[#4d4c4c]'/>
+          </div>
+          <div>
+          <TabsMenu defaultValue='AI Tools' triggers={['AI Tools', 'Transcript', 'Activity']}  >
+          <AiTools
+              videoId={videoId}
+              trial={video.User?.trial!}
+              plan={video.User?.subscription?.plan!}
+            />
+            <VideoTranscript transcript={video.description as string}/>
+            <TabsContent value='Activity' className='p-5 bg-[#1D1D1D] rounded-xl flex flex-col gap-y-6' >
+                Make changes to your account here
+            </TabsContent>
+          </TabsMenu>
+        
           </div>
           </div>
 </div>
 
-   )
+   
     }
 export default VideoPreview

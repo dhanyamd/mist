@@ -10,7 +10,7 @@ type Props = {
 }
 
 const RichLink = ({description, title, id, source} : Props) => {
-    const copyEmbed = () => {}
+    const copyEmbed = () => {
     const orignalTitle = title
     const thumbnail = `<a style="display: flex; flex-direction: column; gap: 10px" href="${process.env.NEXT_PUBLIC_HOST_URL}/preview/${id}">
     <h3 style="text-decoration: none; color: black; margin: 0;">${orignalTitle}</h3>
@@ -38,10 +38,10 @@ const RichLink = ({description, title, id, source} : Props) => {
         description: 'Successfully copied embedded link',
       })
     })
-  
+}
   return (
    <Button onClick={copyEmbed} className='rounded-full'>
-
+  Get Embed code
    </Button>
   )
 }
