@@ -133,3 +133,47 @@ export const onAuthenticateUser = async () => {
     }
   }
   
+  export const getFirstView = async() => {
+    try{
+      const user = await currentUser();
+      if(!user) return {status : 402}
+      const userData = await client.user.findUnique({
+        where : {
+          clerkid : user.id
+        },
+        select : {
+          firstView : true
+        }
+      })
+      if(userData){
+        return {status : 200, data : userData.firstView}
+      }
+      return { status : 403, data : false}
+    }catch(error){}
+    
+  }
+
+  export const enableFirstView = async(state : boolean) => {
+    try{
+      const user = await currentUser();
+      if(!user) return {status : 400}
+      const view = await client.user.update({
+        where : {
+          clerkid : user.id
+        },
+        data : {
+          firstView : state
+        }
+      })
+
+      if(view){
+        return {status : 200, data : "Settings updated!"}
+      }
+    }catch(error){
+      return {status : 404} 
+    }
+    
+
+  }
+
+    
