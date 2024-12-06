@@ -25,7 +25,7 @@ const VideoPreview = ({videoId} : Props) => {
      const daysAgo = Math.floor(
             (new Date().getTime() - video.createdAt.getTime())/ (24 * 60 * 60 *1000)
         )
-   return   <div className='grid grid-cols-1 xl:grid-cols-3 lg:px-20 lg:py-20 p-10 gap-5 overflow-y-auto'>
+   return   <div className='grid grid-cols-1 xl:grid-cols-3 lg:py-10 gap-5 overflow-y-auto'>
    <div className='flex flex-col lg:col-span-2 gap-y-10'>
   <div>
     <div className='flex gap-x-5 items-start justify-between'>
@@ -85,7 +85,7 @@ const VideoPreview = ({videoId} : Props) => {
           title={video.title as string}/>
           <Download className='text-[#4d4c4c]'/>
           </div>
-          <div>
+        <div>
           <TabsMenu defaultValue='AI Tools' triggers={['AI Tools', 'Transcript', 'Activity']}  >
           <AiTools
               videoId={videoId}
@@ -97,8 +97,7 @@ const VideoPreview = ({videoId} : Props) => {
                 Make changes to your account here
             </TabsContent>
           </TabsMenu>
-        
-          </div>
+        </div>
           </div>
 </div>
 

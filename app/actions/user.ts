@@ -109,4 +109,27 @@ export const onAuthenticateUser = async () => {
 
     }
   }
+
+  export const getPaymentInfo = async () => {
+    try {
+      const user = await currentUser()
+      if (!user) return { status: 404 }
+  
+      const payment = await client.user.findUnique({
+        where: {
+          clerkid: user.id,
+        },
+        select: {
+          subscription: {
+           select : {plan : true}
+          },
+        },
+      })
+      if (payment) {
+        return { status: 200, data: payment }
+      }
+    } catch (error) {
+      return { status: 400 }
+    }
+  }
   
