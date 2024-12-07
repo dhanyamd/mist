@@ -26,7 +26,7 @@ const VideoPage = async({params : {videoId}} : Props) => {
     
     await query.prefetchQuery({
         queryKey : ['video-comments'],
-        queryFn : () => getVideoComments
+        queryFn : () => getVideoComments(videoId)
     })
   return (
    <HydrationBoundary state={dehydrate(query)}>

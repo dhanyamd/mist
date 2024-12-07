@@ -173,47 +173,51 @@ export const onAuthenticateUser = async () => {
       return {status : 404} 
     }
   }
-
-export const createCommentandReply = async(videoId : string,  userId : string, comment : string,commentId? : string | undefined) => {
-  try {
-    if (commentId) {
-      const reply = await client.comment.update({
+  export const createCommentAndReply = async (
+    userId: string,
+    comment: string,
+    videoId: string,
+    commentId?: string | undefined
+  ) => {
+    try {
+      if (commentId) {
+        const reply = await client.comment.update({
+          where: {
+            id: commentId,
+          },
+          data: {
+            reply: {
+              create: {
+                comment,
+                userId,
+                videoId,
+              },
+            },
+          },
+        })
+        if (reply) {
+          return { status: 200, data: 'Reply posted' }
+        }
+      }
+  
+      const newComment = await client.video.update({
         where: {
-          id: commentId,
+          id: videoId,
         },
         data: {
-          reply: {
+          Comment: {
             create: {
               comment,
               userId,
-              videoId,
             },
           },
         },
       })
-      if (reply) {
-        return { status: 200, data: 'Reply posted' }
-      }
+      if (newComment) return { status: 200, data: 'New comment added' }
+    } catch (error) {
+      return { status: 400 }
     }
-
-    const newComment = await client.video.update({
-      where: {
-        id: videoId,
-      },
-      data: {
-        Comment: {
-          create: {
-            comment,
-            userId,
-          },
-        },
-      },
-    })
-    if (newComment) return { status: 200, data: 'New comment added' }
-  } catch (error) {
-    return { status: 400 }
   }
-}
 
 
 export const getUserProfile = async() => {

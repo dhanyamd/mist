@@ -63,13 +63,15 @@ const Activities = ({ author, videoId }: Props) => {
   return (
     <TabsContent
       value="Activity"
-      className="rounded-xl flex flex-col gap-y-5"
+     
     >
+
       <CommentForm
         author={author}
         videoId={videoId}
       />
-      {comments?.map((comment) => (
+      <div className='pt-2'></div>
+         {comments?.map((comment) => (
         <CommentCard
           comment={comment.comment}
           key={comment.id}
@@ -81,7 +83,7 @@ const Activities = ({ author, videoId }: Props) => {
           videoId={videoId}
           reply={comment.reply}
           commentId={comment.id}
-          //createdAt={comment.createdAt}
+          createdAt={comment.createdAt}
         />
       ))}
     </TabsContent>
