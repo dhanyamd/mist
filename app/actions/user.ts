@@ -174,42 +174,47 @@ export const onAuthenticateUser = async () => {
     }
   }
 
-export const createCommentandReply = async(videoId : string,  userId : string, comment : string,commentId? : string) => {
-  try{
-   const reply = await client.comment.update({
-   where : {
-    id : commentId
-   },
-   data : {
-    reply : {
-      create : {
-        comment,
-        userId,
-        videoId
+export const createCommentandReply = async(videoId : string,  userId : string, comment : string,commentId? : string | undefined) => {
+  try {
+    if (commentId) {
+      const reply = await client.comment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          reply: {
+            create: {
+              comment,
+              userId,
+              videoId,
+            },
+          },
+        },
+      })
+      if (reply) {
+        return { status: 200, data: 'Reply posted' }
       }
     }
-   }
-   })
-   if(reply){
-    return {status : 200, data : "Reply posted"}
-   }
-   const newcomment = await client.video.update({
-    where : {
-      id : videoId
-    },
-    data : {
-      Comment : {
-        create : {
-          comment,
-          userId
-        }
-      }
-    }
-   })
-   if(newcomment){ return {status : 200, data : "Comment created"}}
-   return {status: 400, data : "error"}
-  }catch(error){}
+
+    const newComment = await client.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        Comment: {
+          create: {
+            comment,
+            userId,
+          },
+        },
+      },
+    })
+    if (newComment) return { status: 200, data: 'New comment added' }
+  } catch (error) {
+    return { status: 400 }
+  }
 }
+
 
 export const getUserProfile = async() => {
 try{
@@ -228,5 +233,27 @@ try{
     return {status : 200, data : profileIdandImage}
   }
 }catch(error){}
+}
 
+export const getVideoComments = async (Id: string) => {
+  try {
+    const comments = await client.comment.findMany({
+      where: {
+        OR: [{ videoId: Id }, { commentId: Id }],
+        commentId: null,
+      },
+      include: {
+        reply: {
+          include: {
+            User: true,
+          },
+        },
+        User: true,
+      },
+    })
+
+    return { status: 200, data: comments }
+  } catch (error) {
+    return { status: 400 }
+  }
 }

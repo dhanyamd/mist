@@ -1,4 +1,4 @@
-import { getUserProfile } from '@/app/actions/user'
+import { getUserProfile, getVideoComments } from '@/app/actions/user'
 import { previewVideo } from '@/app/actions/workspace'
 import VideoPreview from '@/app/global/videos/preview'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
@@ -21,6 +21,12 @@ const VideoPage = async({params : {videoId}} : Props) => {
     await query.prefetchQuery({
         queryKey : ['user-profile'],
         queryFn : () => getUserProfile
+    })
+
+    
+    await query.prefetchQuery({
+        queryKey : ['video-comments'],
+        queryFn : () => getVideoComments
     })
   return (
    <HydrationBoundary state={dehydrate(query)}>

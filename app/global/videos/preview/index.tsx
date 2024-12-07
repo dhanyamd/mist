@@ -22,9 +22,9 @@ const VideoPreview = ({videoId} : Props) => {
     const router = useRouter()
     const {data} = useQueryData(['preview-video'], () => previewVideo(videoId))
     const {data : video, status, author} = data as VideosProps
-    if(status !== 200) router.push('/')
+   
      const daysAgo = Math.floor(
-            (new Date().getTime() - video.createdAt.getTime())/ (24 * 60 * 60 *1000)
+            (new Date().getTime() - video?.createdAt.getTime())/ (24 * 60 * 60 *1000)
         )
    return   <div className='grid grid-cols-1 xl:grid-cols-3 lg:py-10 gap-5 overflow-y-auto'>
    <div className='flex flex-col lg:col-span-2 gap-y-10'>
@@ -94,7 +94,10 @@ const VideoPreview = ({videoId} : Props) => {
               plan={video.User?.subscription?.plan!}
             />
             <VideoTranscript transcript={video.description as string}/>
-           <Activities videoId={videoId} author={video.User?.firstname as string}/>
+            <Activities
+              author={video.User?.firstname as string}
+              videoId={videoId}
+            />
           </TabsMenu>
         </div>
           </div>
