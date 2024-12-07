@@ -12,6 +12,7 @@ import TabsMenu from '../../tabs'
 import AiTools from '../../ai-tools'
 import VideoTranscript from '../../video-transcript'
 import { TabsContent } from '@/components/ui/tabs'
+import Activities from '../../activities'
 
 type Props = {
     videoId : string
@@ -93,9 +94,7 @@ const VideoPreview = ({videoId} : Props) => {
               plan={video.User?.subscription?.plan!}
             />
             <VideoTranscript transcript={video.description as string}/>
-            <TabsContent value='Activity' className='p-5 bg-[#1D1D1D] rounded-xl flex flex-col gap-y-6' >
-                Make changes to your account here
-            </TabsContent>
+           <Activities videoId={videoId} author={video.User?.firstname as string}/>
           </TabsMenu>
         </div>
           </div>

@@ -172,8 +172,61 @@ export const onAuthenticateUser = async () => {
     }catch(error){
       return {status : 404} 
     }
-    
-
   }
 
-    
+export const createCommentandReply = async(videoId : string,  userId : string, comment : string,commentId? : string) => {
+  try{
+   const reply = await client.comment.update({
+   where : {
+    id : commentId
+   },
+   data : {
+    reply : {
+      create : {
+        comment,
+        userId,
+        videoId
+      }
+    }
+   }
+   })
+   if(reply){
+    return {status : 200, data : "Reply posted"}
+   }
+   const newcomment = await client.video.update({
+    where : {
+      id : videoId
+    },
+    data : {
+      Comment : {
+        create : {
+          comment,
+          userId
+        }
+      }
+    }
+   })
+   if(newcomment){ return {status : 200, data : "Comment created"}}
+   return {status: 400, data : "error"}
+  }catch(error){}
+}
+
+export const getUserProfile = async() => {
+try{
+  const user = await currentUser();
+  if(!user) return {status:402}
+  const profileIdandImage = await client.user.findUnique({
+    where : {
+      clerkid : user.id
+    },
+    select : {
+      id : true,
+      image : true
+    }
+  })
+  if(profileIdandImage){
+    return {status : 200, data : profileIdandImage}
+  }
+}catch(error){}
+
+}
