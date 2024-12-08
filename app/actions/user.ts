@@ -361,3 +361,58 @@ export const sendEmail = async (
   }
   return { transporter, mailOptions }
 }
+
+export const acceptInvite = async(inviteId: string) => {
+  try{
+   const user = await currentUser();
+   if(!user) return {status : 404}
+   const invitation = await client.invite.findUnique({
+    where : {
+      id : inviteId
+    },
+    select : {
+      workSpaceId : true,
+      reciever : {
+          select : {
+            clerkid : true
+          }
+      }
+    }
+   })
+   if(user.id !== invitation?.reciever?.clerkid){
+    return {status : 404}
+   }
+  const acceptInvite = await client.invite.update({
+    where : {
+    id : inviteId
+    },
+    data : {
+      accepted : true
+    }
+  })
+  const updateMember = client.user.update({
+    where: {
+      clerkid: user.id,
+    },
+    data: {
+      members: {
+        create: {
+          workSpaceId: invitation.workSpaceId,
+        },
+      },
+    },
+  })
+//@ts-ignore
+  const membersTransaction = await client.$transaction([
+    acceptInvite,
+    updateMember,
+  ])
+ 
+  if (membersTransaction) {
+    return { status: 200 }
+  }
+  return { status: 400 }
+  }catch(error){
+     return {status : 400}
+  }
+}
