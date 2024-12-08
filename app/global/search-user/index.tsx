@@ -1,4 +1,7 @@
+'use client'
 import Loader from '@/app/(website)/_components/loader'
+import { inviteMembers } from '@/app/actions/user'
+import { useMutationData } from '@/app/hooks/useMutationData'
 import { useSearch } from '@/app/hooks/useSearch'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -16,11 +19,9 @@ const Search = ({workspaceId} : Props) => {
     'get-users',
      'USERS'
   )
- /* const {mutate, isPending} = useMutationData(['invite-member'], 
-    (data : {recieverId : string, email : string}) => {
-
-    }
-  )*/
+  const {mutate, isPending} = useMutationData(['invite-member'], 
+    (data : {recieverId : string, email : string}) => inviteMembers( data.email, data.recieverId, workspaceId)
+  )
   return (
     <div className='flex flex-col gap-y-5'>
       <Input 
@@ -56,8 +57,8 @@ const Search = ({workspaceId} : Props) => {
               <p className='lowercase text-xs bg-white px-2 rounded-lg text-[#1e1e1e]'>{user?.subscription?.plan}</p>
                  </div>
                  <div className='flex-1 flex justify-end items-center'>
-                   <Button onClick={() => {}} variant={'default'} className='w-5/12 font-bold' >
-                     <Loader state={false} color='#000'>
+                   <Button onClick={() => mutate({reciverId : user.id, email: user.email})} variant={'default'} className='w-5/12 font-bold' >
+                     <Loader state={isPending} color='#000'>
                        Invite
                      </Loader>
                    </Button>

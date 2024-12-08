@@ -72,7 +72,13 @@ const CommentCard = ({
             </Button>
           ) : (
             <CommentForm
-              close={() => setOnReply(false)}
+              //close={() => setOnReply(false)}
+              //@ts-ignore
+              close={(e : any ) => {
+                if(e.key === "Enter"){
+                    setOnReply(false)
+                }
+              } }
               videoId={videoId}
               commentId={commentId}
               author={author.firstname + ' ' + author.lastname}
