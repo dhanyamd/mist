@@ -1,9 +1,9 @@
 'use client'
-import { previewVideo } from '@/app/actions/workspace'
+import { previewVideo, sendEmailFirstView } from '@/app/actions/workspace'
 import { useQueryData } from '@/app/hooks/useQueryData'
 import { VideosProps } from '@/app/types/index.types'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CopyLink from '../copy-link'
 import RichLink from '../richlink'
 import { truncateString } from '@/lib/utils'
@@ -22,10 +22,18 @@ const VideoPreview = ({videoId} : Props) => {
     const router = useRouter()
     const {data} = useQueryData(['preview-video'], () => previewVideo(videoId))
     const {data : video, status, author} = data as VideosProps
-   
+     const notifyFirstView = async() => sendEmailFirstView(videoId)
      const daysAgo = Math.floor(
             (new Date().getTime() - video?.createdAt.getTime())/ (24 * 60 * 60 *1000)
         )
+      useEffect(() => {
+        if(video.views == 0){
+          notifyFirstView()
+        }
+        return () => {
+          notifyFirstView()
+        }
+      },[])
    return   <div className='grid grid-cols-1 xl:grid-cols-3 lg:py-10 gap-5 overflow-y-auto'>
    <div className='flex flex-col lg:col-span-2 gap-y-10'>
   <div>

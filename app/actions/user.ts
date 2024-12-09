@@ -416,3 +416,4 @@ export const acceptInvite = async(inviteId: string) => {
      return {status : 400}
   }
 }
+

@@ -1,6 +1,7 @@
 "use server"
 import { client } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server"
+import { sendEmail } from "./user";
 
 export const verifyAccessToWorkspace = async(workspaceId : string) => {
     try{
@@ -347,3 +348,68 @@ export const previewVideo = async(videoId : string) => {
       return {status : 404}
     }
 }
+
+export const sendEmailFirstView = async(videoId : string) => {
+    const user = await currentUser();
+    if(!user) return {status:404}
+    const firstViewSettings = await client.user.findUnique({
+      where : {
+        clerkid : user.id
+      },
+      select : {
+        firstView : true
+      }
+    })
+    if(!firstViewSettings) return {status : 404}
+    const video = await client.video.findUnique({
+      where : {
+        id : videoId
+      },
+      select : {
+        title : true,
+        views : true,
+        User : {
+          select : {
+            email : true
+          }
+        }
+      }
+    })
+    if(video && video.views == 0 ){
+      await client.video.update({
+        where : {
+          id : videoId
+        },
+        data : {
+          views : video.views + 1
+        }
+      })
+    }
+    if(!video) return
+    const {transporter, mailOptions} = await sendEmail(
+      video.User?.email! ,
+      'You got a viewer',
+      `Your video ${video.title} just got its first view!`
+    )
+    transporter.sendMail(mailOptions, async(error, info) => {
+        if(error){
+            console.log(error.message)
+        }else {
+            const notifications = await client.user.update({
+                where : {
+                    clerkid : user.id
+                },
+                data : {
+                    notification : {
+                        create : {
+                            content : mailOptions.text
+                        }
+                    }
+                }
+            })
+            if(notifications){
+                return {status : 200}
+            }
+        }
+    })
+  }
