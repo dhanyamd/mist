@@ -28,7 +28,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
   // Handle protected routes
 
-
+  
   // Handle simple requests
   const response = NextResponse.next()
 
