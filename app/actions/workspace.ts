@@ -413,3 +413,19 @@ export const sendEmailFirstView = async(videoId : string) => {
         }
     })
   }
+
+  export const editVideoInfo = async(videoId : string, title : string, description : string) => {
+    try{
+        const video = await client.video.update({
+            where : {id : videoId},
+            data : {
+                title,
+                description
+            }
+        })
+        if(video) return {status : 200, data : 'Video succesfully updated'}
+        return {status : 404, data : 'Video not found'}
+    }catch(error){
+        return {status : 400}
+    }
+  }

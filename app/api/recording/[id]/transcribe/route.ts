@@ -13,7 +13,7 @@ export async function POST(req : NextRequest, {params} : {params : {id : string}
             data : {
                 title : content.title,
                 description : content.description,
-                summery : content.summary,
+                summery : body.transcript,
             }
         })
         if(transcribed){
