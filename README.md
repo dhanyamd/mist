@@ -1,4 +1,4 @@
-
+Mist is an AI powered screen recorder web application (coming soon)
 
 ![Screenshot 2024-11-29 203816](https://github.com/user-attachments/assets/437b3c51-3b8d-4b6e-8d49-a0a7bd8a0371)
 
