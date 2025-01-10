@@ -64,48 +64,48 @@ export const getWorkSpaceFolders = async(workspaceId : string) => {
    }
 }
 
-export const getAllUserVideos = async(workSpaceId : string) => {
- try{
-    const user = await currentUser()
-    if(!user) return {status : 404}
-    const videos = await client.video.findMany({
-        where : {
-            OR : [{workSpaceId}, {folderId : workSpaceId}]
+export const getAllUserVideos = async (workSpaceId: string) => {
+    try {
+      const user = await currentUser()
+      if (!user) return { status: 404 }
+      const videos = await client.video.findMany({
+        where: {
+          OR: [{ workSpaceId }, { folderId: workSpaceId }],
         },
-        select : {
-            id : true,
-            title : true,
-            createdAt : true,
-            source : true,
-            processing : true,
-            Folder : {
-                select : {
-                    id : true,
-                    name : true
-                }
+        select: {
+          id: true,
+          title: true,
+          createdAt: true,
+          source: true,
+          processing: true,
+          Folder: {
+            select: {
+              id: true,
+              name: true,
             },
-            User : {
-                select : {
-                    firstname : true,
-                    lastname : true,
-                    image : true
-                }
-            }
-        
+          },
+          User: {
+            select: {
+              firstname: true,
+              lastname: true,
+              image: true,
+            },
+          },
         },
-        orderBy : {
-            createdAt : "asc"
-        }
-    })
-   if(videos && videos.length > 0){
-    return {status : 200, data : videos}
-   }
-   return {status : 404}
- }catch(error){
-    console.log("error", error)
-    return {status : 404}
- }
-}
+        orderBy: {
+          createdAt: 'asc',
+        },
+      })
+  
+      if (videos && videos.length > 0) {
+        return { status: 200, data: videos }
+      }
+  
+      return { status: 404 }
+    } catch (error) {
+      return { status: 400 }
+    }
+  }
 
 export const getWorkspaces = async() => {
     try{

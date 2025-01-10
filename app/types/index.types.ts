@@ -46,7 +46,7 @@ export type WorkspaceProps = {
         image : string | null
       } | null 
       id : string
-      proccessing : boolean 
+      processing : boolean 
       Folder : {
         id : string 
         name : string
