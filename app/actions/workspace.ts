@@ -360,7 +360,7 @@ export const sendEmailFirstView = async(videoId : string) => {
         firstView : true
       }
     })
-    if(!firstViewSettings) return {status : 404}
+    if(!firstViewSettings?.firstView) return
     const video = await client.video.findUnique({
       where : {
         id : videoId
@@ -381,7 +381,7 @@ export const sendEmailFirstView = async(videoId : string) => {
           id : videoId
         },
         data : {
-          views : video.views + 1
+          views : video.views + 1,
         }
       })
     }
@@ -389,7 +389,7 @@ export const sendEmailFirstView = async(videoId : string) => {
     const {transporter, mailOptions} = await sendEmail(
       video.User?.email! ,
       'You got a viewer',
-      `Your video ${video.title} just got its first view!`
+      `Your video ${video.title} just got a view!`
     )
     transporter.sendMail(mailOptions, async(error, info) => {
         if(error){

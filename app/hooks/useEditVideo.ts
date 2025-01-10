@@ -9,7 +9,7 @@ export const useEditVideo = (
     description : string
 ) => {
     const {mutate, isPending} = useMutationData(['edit-video'], (data : 
-        {title : string; description : string}) => editVideoInfo(videoId, data.title, data.description),"preview-video")
+        {title : string; description : string}) => editVideoInfo(videoId, data.title, data.description),'preview-video')
     const {errors, onFormSubmit, register, reset, watch} = useZodForm(
         editVideoInfoSchema,
         mutate,
