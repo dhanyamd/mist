@@ -16,7 +16,7 @@ type Props = {
 const Videos = ({ folderId, videosKey, workspaceId }: Props) => {
   
   const { data: videoData } = useQueryData([videosKey], () =>
-    getAllUserVideos(workspaceId)
+    getAllUserVideos(folderId)
   )
 
   const { status: videosStatus, data: videos } = videoData as VideoProps
