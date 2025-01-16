@@ -1,4 +1,4 @@
-Mist is a lightweight screen recorder to manage files and videos across distinct and organized folders providing an unique user interface crafted for customers and entrepreneurs to easily and effectively manage their recordings 🌨️
+Mist is a lightweight screen recording software similar to loom but more customisable and unique with everything and more built-in web app and an desktop app! 🌨️
 
 ![WhatsApp Image 2025-01-12 at 7 03 58 PM (1)](https://github.com/user-attachments/assets/71f039ac-0a40-493e-969c-def07a1bb405)
 
