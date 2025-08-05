@@ -14,6 +14,12 @@ ElectronJS for the desktop
 
 Postgress, Prisma as ORM
 
+STEPS - (detailed soon) 
+• go to mist/electron and start the app
+• go to mist/express and start ti listen for
+• run this project using npm install followed by  
+  npm run dev and wait for it to connect
+
 ![WhatsApp Image 2025-01-12 at 7 03 58 PM (1)](https://github.com/user-attachments/assets/71f039ac-0a40-493e-969c-def07a1bb405)
 
 
